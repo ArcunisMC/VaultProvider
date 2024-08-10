@@ -1,0 +1,13 @@
+name: VaultProvider
+version: '1.0'
+main: com.arcunis.vaultprovider.Main
+api-version: '1.21'
+prefix: VaultProvider
+load: STARTUP
+authors: [ Phant0m2290 ]
+description: Vault economy provider
+dependencies:
+  server:
+    Vault:
+      load: BEFORE
+      required: true

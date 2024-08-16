@@ -41,12 +41,12 @@ public class EconomyProvider implements Economy {
 
     @Override
     public String currencyNamePlural() {
-        return currencyNameSingular();
+        return main.getConfig().getString("name-plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return main.getConfig().getString("name");
+        return main.getConfig().getString("name-singular");
     }
 
     @Override

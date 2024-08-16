@@ -1,2 +1,3 @@
 symbol: "$"
-name: "dollar"
+name-singular: "dollar"
+name-plural: "dollars"

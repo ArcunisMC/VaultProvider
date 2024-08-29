@@ -5,7 +5,8 @@ import java.util.*;
 
 public class EconomyManager {
 
-    public static void createAcc(UUID uuid) {
+    public static void createAcc(UUID uuid) throws RuntimeException {
+        if (hasAcc(uuid)) throw new RuntimeException("Player already has an account.");
         Database db = new Database();
         String insertQuery = "INSERT INTO accounts (uuid, balance) VALUES (?, ?)";
         try (PreparedStatement statement = db.conn.prepareStatement(insertQuery)) {
@@ -116,7 +117,8 @@ public class EconomyManager {
         }
     }
 
-    public static void createBank(String name, UUID owner) {
+    public static void createBank(String name, UUID owner) throws RuntimeException {
+        if (hasBank(name)) throw new RuntimeException("Bank with name %s already exists.".formatted(name));
         Database db = new Database();
         String insertQuery = "INSERT INTO banks (name, owner, balance) VALUES (?, ?, ?)";
         try (PreparedStatement statement = db.conn.prepareStatement(insertQuery)) {

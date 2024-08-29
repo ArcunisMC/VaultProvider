@@ -19,6 +19,10 @@ public class Database {
 
     public void createTables(Main main) {
         try {
+
+            PreparedStatement kvTable = conn.prepareStatement("CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY NOT NULL, value BLOB);");
+            kvTable.execute();
+
             PreparedStatement accountTable = conn.prepareStatement("CREATE TABLE IF NOT EXISTS accounts (uuid VARCHAR(36) NOT NULL PRIMARY KEY, balance DOUBLE NOT NULL);");
             accountTable.execute();
 

@@ -1,3 +1,10 @@
+# Automatically create an account for new players and existing players
+auto-create-player-acc: true
+
+
+# Symbol for the currency
 symbol: "$"
+
+# Currency name
 name-singular: "dollar"
 name-plural: "dollars"

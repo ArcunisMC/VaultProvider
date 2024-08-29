@@ -1,7 +1,7 @@
 name: VaultProvider
 version: '1.0-rc3'
 main: com.arcunis.vaultprovider.Main
-api-version: '1.21'
+api-version: '1.21.1'
 prefix: VaultProvider
 load: STARTUP
 authors: [ Phant0m2290 ]

@@ -60,7 +60,7 @@ public final class Main extends JavaPlugin implements Listener {
             registerExistingPlayers();
 
             // Register player join event
-            Bukkit.getPluginManager().registerEvents(new OnPlayerJoin(), this);
+            Bukkit.getPluginManager().registerEvents(new Events(this), this);
 
         }
 

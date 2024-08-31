@@ -1,5 +1,5 @@
 name: VaultProvider
-version: 1.0-beta.4
+version: "1.0"
 main: com.arcunis.vaultprovider.Main
 api-version: '1.21.1'
 prefix: VaultProvider

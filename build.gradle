@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.arcunis'
-version = '1.0-rc3'
+version = "1.0.4"
 
 repositories {
     mavenCentral()

@@ -1,11 +1,10 @@
 package com.arcunis.vaultprovider;
 
-import com.arcunis.vaultprovider.commands.VaultProvider;
 import com.arcunis.vaultprovider.economy.EconomyProvider;
 import com.arcunis.vaultprovider.economy.VPEconomy;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,6 +17,8 @@ public final class Main extends JavaPlugin implements Listener {
     public static Logger logger;
 
     public static Economy econ;
+    public static Permission perm;
+    public static Chat chat;
 
     @Override
     public void onEnable() {
@@ -38,20 +39,10 @@ public final class Main extends JavaPlugin implements Listener {
         econ = new EconomyProvider(this);
         new VPEconomy().onEnable(this);
 
-        try {
-            Class.forName("net.milkbowl.vault.economy.Economy");
-            getServer().getServicesManager().register(Economy.class, econ, this, ServicePriority.Normal);
-        } catch (ClassNotFoundException e) {
-            getLogger().warning("Could not register economy provider. Could not find Vault. Disabling...");
-            getServer().getPluginManager().disablePlugin(this);
-            throw new RuntimeException(e);
-        }
+        // Initialize permission
 
-        // Register events
-        Bukkit.getPluginManager().registerEvents(new Events(this), this);
 
-        // Register command
-        new VaultProvider(this);
+        // Initialize chat
 
     }
 

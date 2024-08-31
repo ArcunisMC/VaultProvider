@@ -17,4 +17,4 @@ This means that:
 
 - **No Redistribution**: You cannot redistribute this project; you can only share it as is.
 
-If you would like to use this project for commercial purposes, please contact me at [phamt0m2290@arcunis.com](mailto:phamt0m2290@arcunis.com).
+If you would like to use this project for commercial purposes, please contact me at [legal@arcunis.com](mailto:legal@arcunis.com).

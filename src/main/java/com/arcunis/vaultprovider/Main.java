@@ -1,8 +1,8 @@
 package com.arcunis.vaultprovider;
 
-import com.arcunis.vaultprovider.commands.VaultProvider;
 import com.arcunis.vaultprovider.economy.EconomyProvider;
 import com.arcunis.vaultprovider.economy.VPEconomy;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -18,6 +18,8 @@ public final class Main extends JavaPlugin implements Listener {
     public static Logger logger;
 
     public static Economy econ;
+    public static Permission perm;
+    public static Chat chat;
 
     @Override
     public void onEnable() {

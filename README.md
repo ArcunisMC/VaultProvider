@@ -1,8 +1,3 @@
 # VaultProvider
-Simple economy provider for [Vault](https://github.com/MilkBowl/Vault)
-
-# To-Do Before 1.0
-- [x] Option for auto acc creation
-- [x] Create command for economy management
-- [x] Add option for new account balance
-- [ ] Test
+Simple provider for [Vault](https://github.com/MilkBowl/Vault)
+Currently only supports economy but Permission and Chat are in the works

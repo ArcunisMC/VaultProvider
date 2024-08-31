@@ -1,16 +1,15 @@
 package com.arcunis.vaultprovider;
 
 import com.arcunis.vaultprovider.commands.VaultProvider;
+import com.arcunis.vaultprovider.economy.EconomyProvider;
+import com.arcunis.vaultprovider.economy.VPEconomy;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
 import java.nio.file.Path;
-import java.sql.*;
 import java.util.logging.Logger;
 
 public final class Main extends JavaPlugin implements Listener {
@@ -24,14 +23,8 @@ public final class Main extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
 
-        // Create files
-        try {
-            if (!getDataFolder().exists()) getDataFolder().mkdir();
-            File dbFile = new File(getDataFolder(), "economy.db");
-            if (!dbFile.exists()) dbFile.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // Create data folder
+        if (!getDataFolder().exists()) getDataFolder().mkdir();
 
         // Set static variables
         dataPath = getDataPath();
@@ -41,8 +34,9 @@ public final class Main extends JavaPlugin implements Listener {
         Database db = new Database();
         db.createTables(this);
 
-        // Register vault economy provider
+        // Initialize economy
         econ = new EconomyProvider(this);
+        new VPEconomy().onEnable(this);
 
         try {
             Class.forName("net.milkbowl.vault.economy.Economy");

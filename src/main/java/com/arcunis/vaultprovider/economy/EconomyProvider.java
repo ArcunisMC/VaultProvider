@@ -1,5 +1,6 @@
-package com.arcunis.vaultprovider;
+package com.arcunis.vaultprovider.economy;
 
+import com.arcunis.vaultprovider.Main;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;

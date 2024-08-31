@@ -1,4 +1,6 @@
-package com.arcunis.vaultprovider;
+package com.arcunis.vaultprovider.economy;
+
+import com.arcunis.vaultprovider.Database;
 
 import java.sql.*;
 import java.util.*;

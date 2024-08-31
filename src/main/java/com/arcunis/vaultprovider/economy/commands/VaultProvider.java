@@ -1,22 +1,18 @@
-package com.arcunis.vaultprovider.commands;
+package com.arcunis.vaultprovider.economy.commands;
 
-import com.arcunis.vaultprovider.EconomyManager;
-import com.arcunis.vaultprovider.EconomyProvider;
+import com.arcunis.vaultprovider.economy.EconomyManager;
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.utils.Command;
 import com.arcunis.vaultprovider.utils.Permission;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.units.qual.N;
 import org.jetbrains.annotations.NotNull;
 
-import javax.naming.Name;
 import java.util.*;
 
 public class VaultProvider extends Command {
@@ -98,10 +94,8 @@ public class VaultProvider extends Command {
                     double value = Double.parseDouble(args[3]);
                     EconomyManager.withdrawAcc(uuid, value);
                     sender.sendMessage(Component.text("%s's new Balance: %s".formatted(playerName, Main.econ.format(EconomyManager.getAccBal(uuid)))).color(NamedTextColor.GOLD));
-                    return;
                 } catch (NumberFormatException exception) {
                     sender.sendMessage(Component.text("Invalid usage.").color(NamedTextColor.DARK_RED));
-                    return;
                 }
 
             }
@@ -141,10 +135,8 @@ public class VaultProvider extends Command {
                     double value = Double.parseDouble(args[3]);
                     EconomyManager.depositBank(bank, value);
                     sender.sendMessage(Component.text("%s's new Balance: %s".formatted(bank, Main.econ.format(EconomyManager.getBankBal(bank)))).color(NamedTextColor.GOLD));
-                    return;
                 } catch (NumberFormatException exception) {
                     sender.sendMessage(Component.text("Invalid usage.").color(NamedTextColor.DARK_RED));
-                    return;
                 }
 
             } else if (args[2].equalsIgnoreCase("withdraw")) {

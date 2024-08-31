@@ -1,13 +1,8 @@
-# Automatically create an account for new players and existing players
-auto-create-player-acc: true
+# Initial balance for new player accounts
+initial-bal: 100
 
-# Initial balance for new player accounts (only works when auto-create-player-acc is true)
-initial-acc-bal: 100
-
-
-# Symbol for the currency
+# Currency symbol
 symbol: "$"
-
 # Currency name
 name-singular: "dollar"
 name-plural: "dollars"

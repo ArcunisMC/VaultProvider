@@ -1,5 +1,6 @@
 package com.arcunis.vaultprovider;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -14,10 +15,11 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPlayedBefore()) return;
-        Main.logger.info("Created acc for new player %s".formatted(event.getPlayer().getName()));
-        EconomyManager.createAcc(event.getPlayer().getUniqueId());
-        EconomyManager.depositAcc(event.getPlayer().getUniqueId(), plugin.getConfig().getInt("initial-acc-bal:"));
+        Player player = event.getPlayer();
+        if (EconomyManager.hasAcc(player.getUniqueId())) return;
+        Main.logger.info("Created acc for player %s".formatted(event.getPlayer().getName()));
+        EconomyManager.createAcc(player.getUniqueId());
+        EconomyManager.depositAcc(player.getUniqueId(), plugin.getConfig().getDouble("initial-acc-bal"));
     }
 
 }

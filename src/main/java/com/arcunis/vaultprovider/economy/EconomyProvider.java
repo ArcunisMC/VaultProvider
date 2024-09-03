@@ -17,7 +17,7 @@ public class EconomyProvider implements Economy {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return main.getConfig().getBoolean("economy.enabled");
     }
 
     @Override

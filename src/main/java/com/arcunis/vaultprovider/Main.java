@@ -5,6 +5,7 @@ import com.arcunis.vaultprovider.economy.VPEconomy;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,8 +37,10 @@ public final class Main extends JavaPlugin implements Listener {
         db.createTables(this);
 
         // Initialize economy
-        econ = new EconomyProvider(this);
-        new VPEconomy().onEnable(this);
+        if (getConfig().getBoolean("economy.enabled")) {
+            econ = new EconomyProvider(this);
+            new VPEconomy().onEnable(this);
+        }
 
         // Initialize permission
 

@@ -1,8 +1,11 @@
-# Initial balance for new player accounts
-initial-bal: 100
+economy:
+  enabled: true
 
-# Currency symbol
-symbol: "$"
-# Currency name
-name-singular: "dollar"
-name-plural: "dollars"
+  # Initial balance for new player accounts
+  initial-bal: 100
+
+  # Currency symbol
+  symbol: "$"
+  # Currency name
+  name-singular: "dollar"
+  name-plural: "dollars"

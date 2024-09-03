@@ -2,7 +2,6 @@ package com.arcunis.vaultprovider.economy;
 
 import com.arcunis.vaultprovider.Database;
 import com.arcunis.vaultprovider.Main;
-import com.arcunis.vaultprovider.economy.commands.VaultProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 
@@ -37,7 +36,7 @@ public class VPEconomy {
         Bukkit.getPluginManager().registerEvents(new Events(plugin), plugin);
 
         // Register command
-        new VaultProvider(plugin);
+        new EconomyCommand(plugin);
     }
 
 }

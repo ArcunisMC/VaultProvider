@@ -1,6 +1,5 @@
-package com.arcunis.vaultprovider.economy.commands;
+package com.arcunis.vaultprovider.economy;
 
-import com.arcunis.vaultprovider.economy.EconomyManager;
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.utils.Command;
 import com.arcunis.vaultprovider.utils.Permission;
@@ -10,16 +9,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class VaultProvider extends Command {
+public class EconomyCommand extends Command {
 
-    public VaultProvider(@NotNull JavaPlugin plugin) {
-        super(plugin, "vaultprovider", "Manage player accounts and banks", "/vp [acc/bank] <name> [deposit/withdraw/getBal/setBal/...] ...", List.of("vp"));
-        setPermission(new Permission("vaultprovider.manage").name);
+    public EconomyCommand(@NotNull JavaPlugin plugin) {
+        super(plugin, "economy", "Manage player accounts and banks", "/eco [acc/bank] <name> [deposit/withdraw/getBal/setBal/...] ...", List.of("eco"));
+        setPermission(new Permission("vaultprovider.manage", PermissionDefault.OP).name);
         register();
     }
 

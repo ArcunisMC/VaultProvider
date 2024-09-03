@@ -10,7 +10,7 @@ public class Database {
 
     public Database() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:" + Main.dataPath + "/economy.db");
+            conn = DriverManager.getConnection("jdbc:sqlite:" + Main.dataPath + "/vaultprovider.db");
         } catch (SQLException e) {
             Main.logger.warning("Could not connect to database.");
             throw new RuntimeException(e);
@@ -20,6 +20,7 @@ public class Database {
     public void createTables(Main main) {
         try {
 
+            // Economy
             PreparedStatement accountTable = conn.prepareStatement("CREATE TABLE IF NOT EXISTS accounts (uuid VARCHAR(36) NOT NULL PRIMARY KEY, balance DOUBLE NOT NULL);");
             accountTable.execute();
 

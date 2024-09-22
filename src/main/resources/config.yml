@@ -9,3 +9,7 @@ economy:
   # Currency name
   name-singular: "dollar"
   name-plural: "dollars"
+
+  # Enable or disable commands
+  commands:
+    baltop: false

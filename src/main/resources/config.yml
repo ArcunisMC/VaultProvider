@@ -13,3 +13,9 @@ economy:
   # Enable or disable commands
   commands:
     baltop: false
+
+permission:
+  enabled: false
+
+chat:
+  enabled: false

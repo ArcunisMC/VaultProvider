@@ -2,6 +2,8 @@ package com.arcunis.vaultprovider;
 
 import org.bukkit.Bukkit;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 
 public class Database {
@@ -10,9 +12,17 @@ public class Database {
 
     public Database() {
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:" + Main.dataPath + "/vaultprovider.db");
+            // Create file if not exists
+            File dbFile = new File(Main.dataPath.toFile(), "vaultprovider.db");
+            if (!dbFile.exists()) dbFile.createNewFile();
+
+            // Connect to db
+            conn = DriverManager.getConnection("jdbc:sqlite:" + dbFile.getPath());
+
         } catch (SQLException e) {
             Main.logger.warning("Could not connect to database.");
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

@@ -64,6 +64,27 @@ public class EconomyManager {
         }
     }
 
+    public static void setAccBal(UUID uuid, double newBalance) {
+        Database db = new Database();
+        String query = "UPDATE accounts SET balance = ? WHERE uuid = ?";
+        try {
+            PreparedStatement statement = db.conn.prepareStatement(query);
+            statement.setDouble(1, newBalance);
+            statement.setString(2, uuid.toString());
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("Account not found for UUID: " + uuid);
+            }
+
+            db.close();
+        } catch (SQLException e) {
+            db.close();
+            throw new RuntimeException("Failed to update account balance for UUID: " + uuid, e);
+        }
+    }
+
+
     public static double depositAcc(UUID uuid, double amount) {
         Database db = new Database();
         String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE uuid = ?";
@@ -188,6 +209,27 @@ public class EconomyManager {
             throw new RuntimeException(e);
         }
     }
+
+    public static void setBankBal(String name, double newBalance) {
+        Database db = new Database();
+        String query = "UPDATE banks SET balance = ? WHERE name = ?";
+        try {
+            PreparedStatement statement = db.conn.prepareStatement(query);
+            statement.setDouble(1, newBalance);
+            statement.setString(2, name);
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new RuntimeException("No bank found with name: " + name);
+            }
+
+            db.close();
+        } catch (SQLException e) {
+            db.close();
+            throw new RuntimeException("Failed to update bank balance for name: " + name, e);
+        }
+    }
+
 
     public static UUID getBankOwner(String name) {
         Database db = new Database();

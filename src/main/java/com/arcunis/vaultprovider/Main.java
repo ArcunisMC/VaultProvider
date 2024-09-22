@@ -2,6 +2,8 @@ package com.arcunis.vaultprovider;
 
 import com.arcunis.vaultprovider.economy.EconomyProvider;
 import com.arcunis.vaultprovider.economy.VPEconomy;
+import com.arcunis.vaultprovider.permission.PermissionProvider;
+import com.arcunis.vaultprovider.permission.VPPermission;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -9,6 +11,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
@@ -43,7 +47,10 @@ public final class Main extends JavaPlugin implements Listener {
         }
 
         // Initialize permission
-
+        if (getConfig().getBoolean("permission.enabled")) {
+            perm = new PermissionProvider(this);
+            new VPPermission().onEnable(this);
+        }
 
         // Initialize chat
 

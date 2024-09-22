@@ -11,3 +11,7 @@ dependencies:
     Vault:
       load: BEFORE
       required: true
+
+permissions:
+  vaultprovider.economy.manage:
+    default: op

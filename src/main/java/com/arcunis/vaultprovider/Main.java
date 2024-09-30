@@ -1,13 +1,18 @@
 package com.arcunis.vaultprovider;
 
-import com.arcunis.vaultprovider.economy.EconomyProvider;
-import com.arcunis.vaultprovider.economy.VPEconomy;
+import com.arcunis.vaultprovider.commands.*;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,10 +47,27 @@ public final class Main extends JavaPlugin implements Listener {
         db.createTables(this);
 
         // Initialize economy
-        if (getConfig().getBoolean("economy.enabled")) {
-            econ = new EconomyProvider(this);
-            new VPEconomy().onEnable(this);
+        try {
+            Class.forName("net.milkbowl.vault.economy.Economy");
+            getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, Main.econ, this, ServicePriority.Normal);
+        } catch (ClassNotFoundException e) {
+            Main.logger.warning("Could not register economy provider. REASON: Could not find Vault");
+            throw new RuntimeException(e);
         }
+
+        // Register events
+        Bukkit.getPluginManager().registerEvents(new Events(this), this);
+
+        // Register commands
+        LifecycleEventManager<Plugin> pluginLifecycleManager = getLifecycleManager();
+        pluginLifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands commands = event.registrar();
+            new EconomyAdminCommand(commands);
+            if (getConfig().getBoolean("economy.commands.balance")) new BalanceCommand(commands);
+            if (getConfig().getBoolean("economy.commands.pay")) new PayCommand(commands);
+            if (getConfig().getBoolean("economy.commands.deposit")) new DepositCommand(commands);
+            if (getConfig().getBoolean("economy.commands.withdraw")) new WithdrawCommand(commands);
+        });
 
     }
 

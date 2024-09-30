@@ -1,6 +1,5 @@
-package com.arcunis.vaultprovider.economy;
+package com.arcunis.vaultprovider;
 
-import com.arcunis.vaultprovider.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,7 +1,7 @@
-package com.arcunis.vaultprovider.economy.commands;
+package com.arcunis.vaultprovider.commands;
 
 import com.arcunis.vaultprovider.Main;
-import com.arcunis.vaultprovider.economy.EconomyManager;
+import com.arcunis.vaultprovider.EconomyManager;
 import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class BalanceCommand {
 

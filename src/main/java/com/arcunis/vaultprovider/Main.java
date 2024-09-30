@@ -47,10 +47,6 @@ public final class Main extends JavaPlugin implements Listener {
             new VPEconomy().onEnable(this);
         }
 
-        // Initialize permission
-
-        // Initialize chat
-
     }
 
     public static @Nullable String getMessage(String message) {

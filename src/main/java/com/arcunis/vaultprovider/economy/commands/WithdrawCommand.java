@@ -2,6 +2,7 @@ package com.arcunis.vaultprovider.economy.commands;
 
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.economy.EconomyManager;
+import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -12,7 +13,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.apache.commons.text.StringSubstitutor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -55,13 +55,11 @@ public class WithdrawCommand {
         valuesMap.put("bank", bank);
         valuesMap.put("bank-balance", Main.econ.format(EconomyManager.getBankBal(bank)));
         valuesMap.put("amount", Main.econ.format(amount));
-
-        StringSubstitutor sub = new StringSubstitutor(valuesMap);
-
+        
         if (!EconomyManager.getBankMembers(bank).contains(executor.getUniqueId())) {
             executor.sendMessage(
                     Component.text(
-                            sub.replace(Main.getMessage("not-member-of-bank"))
+                            Formatter.format(Main.getMessage("not-member-of-bank"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -70,7 +68,7 @@ public class WithdrawCommand {
         if (EconomyManager.getBankBal(bank) < amount) {
             executor.sendMessage(
                     Component.text(
-                            sub.replace(Main.getMessage("insufficient-funds-bank"))
+                            Formatter.format(Main.getMessage("insufficient-funds-bank"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -81,7 +79,7 @@ public class WithdrawCommand {
 
         executor.sendMessage(
                 Component.text(
-                        sub.replace(Main.getMessage("withdrawn"))
+                        Formatter.format(Main.getMessage("withdrawn"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

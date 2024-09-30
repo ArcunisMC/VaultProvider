@@ -39,6 +39,7 @@ public class Database {
 
             PreparedStatement bankMembersTable = conn.prepareStatement("CREATE TABLE IF NOT EXISTS bank_members (bank_name VARCHAR(255) NOT NULL, member_uuid UUID NOT NULL, PRIMARY KEY (bank_name, member_uuid), FOREIGN KEY (bank_name) REFERENCES banks(name) ON DELETE CASCADE);");
             bankMembersTable.execute();
+
         } catch (SQLException e) {
             main.getLogger().warning("Could not create tables.");
             throw new RuntimeException(e);

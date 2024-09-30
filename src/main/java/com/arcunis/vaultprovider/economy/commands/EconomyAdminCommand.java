@@ -145,21 +145,22 @@ public class EconomyAdminCommand {
                                                                         )
                                                         )
                                         )
+                        )
+                        .then(
+                                // Create subcommand to create banks
+                                Commands.literal("createBank")
                                         .then(
-                                                // Create subcommand to create banks
-                                                Commands.literal("create")
+                                                // Bankname
+                                                Commands.argument("bank", StringArgumentType.string())
+                                                        .executes(BankExecutions::createSelf)
                                                         .then(
-                                                                // Bankname
-                                                                Commands.argument("bank", StringArgumentType.string())
-                                                                        .executes(BankExecutions::create)
-                                                                        .then(
-                                                                                // Owner
-                                                                                Commands.argument("owner", ArgumentTypes.player())
-                                                                                        .executes(BankExecutions::create)
-                                                                        )
+                                                                // Owner
+                                                                Commands.argument("owner", ArgumentTypes.player())
+                                                                        .executes(BankExecutions::createOther)
                                                         )
                                         )
-                        ).build(),
+                        )
+                        .build(),
                 "Manage player accounts and banks",
                 List.of("eco")
         );
@@ -186,7 +187,7 @@ public class EconomyAdminCommand {
 
         public static int deposit(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
             double amount = DoubleArgumentType.getDouble(ctx, "amount");
             double newBal = EconomyManager.depositAcc(player.getUniqueId(), amount);
 
@@ -206,7 +207,7 @@ public class EconomyAdminCommand {
 
         public static int withdraw(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
             double amount = DoubleArgumentType.getDouble(ctx, "amount");
             double newBal = EconomyManager.withdrawAcc(player.getUniqueId(), amount);
 
@@ -226,7 +227,7 @@ public class EconomyAdminCommand {
 
         public static int getBal(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
             double balance = EconomyManager.getAccBal(player.getUniqueId());
 
             ctx.getSource().getSender().sendMessage(Component.text("%s's balance is %s".formatted(player.getName(), Main.econ.format(balance))));
@@ -235,7 +236,7 @@ public class EconomyAdminCommand {
         }
         public static int setBal(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
             double newBal = DoubleArgumentType.getDouble(ctx, "value");
             EconomyManager.setAccBal(player.getUniqueId(), newBal);
 
@@ -507,9 +508,9 @@ public class EconomyAdminCommand {
             return Command.SINGLE_SUCCESS;
         }
 
-        public static int create(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        public static int createOther(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            String bank = StringArgumentType.getString(ctx, "name");
+            String bank = StringArgumentType.getString(ctx, "bank");
             Player owner = ctx.getArgument("owner", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
 
             if (EconomyManager.hasBank(bank)) {
@@ -523,21 +524,38 @@ public class EconomyAdminCommand {
                 );
             }
 
-            if (owner.isEmpty()) {
-                if (ctx.getSource().getSender() instanceof Player) {
-                    owner = (Player) ctx.getSource().getSender();
-                    EconomyManager.createBank(bank, ((Player) ctx.getSource().getSender()).getUniqueId());
-                } else {
-                    ctx.getSource().getSender().sendMessage(
-                            Component.text(
-                                    "Cannot create a bank account without an owner. Please specify an owner"
-                            ).color(NamedTextColor.DARK_RED)
-                    );
-                    return Command.SINGLE_SUCCESS;
-                }
-            } else {
-                EconomyManager.createBank(bank, owner.getUniqueId());
+            EconomyManager.createBank(bank, owner.getUniqueId());
+
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            "Created %s with owner %s"
+                                    .formatted(
+                                            bank,
+                                            owner.getName()
+                                    )
+                    ).color(NamedTextColor.GOLD)
+            );
+
+            return Command.SINGLE_SUCCESS;
+        }
+
+        public static int createSelf(CommandContext<CommandSourceStack> ctx) {
+
+            String bank = StringArgumentType.getString(ctx, "bank");
+            Player owner = (Player) ctx.getSource().getSender();
+
+            if (EconomyManager.hasBank(bank)) {
+                ctx.getSource().getSender().sendMessage(
+                        Component.text(
+                                "A bank called %s already exists."
+                                        .formatted(
+                                                bank
+                                        )
+                        ).color(NamedTextColor.DARK_RED)
+                );
             }
+
+            EconomyManager.createBank(bank, owner.getUniqueId());
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(

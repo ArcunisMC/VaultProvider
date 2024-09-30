@@ -1,18 +1,13 @@
 package com.arcunis.vaultprovider.economy;
 
-import com.arcunis.vaultprovider.Database;
 import com.arcunis.vaultprovider.Main;
+import com.arcunis.vaultprovider.economy.commands.*;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEvent;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
-import org.eclipse.sisu.bean.LifecycleManager;
-
-import java.io.File;
-import java.io.IOException;
 
 public class VPEconomy {
 
@@ -28,9 +23,7 @@ public class VPEconomy {
         // Register events
         Bukkit.getPluginManager().registerEvents(new Events(plugin), plugin);
 
-        // Register command
-        new EconomyCommand(plugin);
-
+        // Register commands
         LifecycleEventManager<Plugin> pluginLifecycleManager = plugin.getLifecycleManager();
         pluginLifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();

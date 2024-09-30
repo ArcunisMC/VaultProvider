@@ -2,6 +2,7 @@ package com.arcunis.vaultprovider.economy.commands;
 
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.economy.EconomyManager;
+import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -13,7 +14,6 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSele
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
-import org.apache.commons.text.StringSubstitutor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,12 +48,10 @@ public class PayCommand {
         valuesMap.put("player", executor.getName());
         valuesMap.put("player-balance", Main.econ.format(EconomyManager.getAccBal(executor.getUniqueId())));
 
-        StringSubstitutor sub = new StringSubstitutor(valuesMap);
-
         if (EconomyManager.getAccBal(executor.getUniqueId()) < amount) {
             executor.sendMessage(
                     Component.text(
-                        sub.replace(Main.getMessage("insufficient-funds-player"))
+                        Formatter.format(Main.getMessage("insufficient-funds-player"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -64,12 +62,12 @@ public class PayCommand {
 
         executor.sendMessage(
                 Component.text(
-                        sub.replace(Main.getMessage("money-sent"))
+                        Formatter.format(Main.getMessage("money-sent"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
         receiver.sendMessage(
                 Component.text(
-                        sub.replace(Main.getMessage("money-received"))
+                        Formatter.format(Main.getMessage("money-received"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

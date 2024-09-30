@@ -2,6 +2,7 @@ package com.arcunis.vaultprovider.economy.commands;
 
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.economy.EconomyManager;
+import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -12,7 +13,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.apache.commons.text.StringSubstitutor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class DepositCommand {
 
     public DepositCommand(Commands commands) {
         commands.register(
-                Commands.literal("withdraw")
+                Commands.literal("deposit")
                         .requires(sourceStack -> sourceStack.getSender() instanceof Player)
                         .then(
                                 Commands.argument("amount", DoubleArgumentType.doubleArg(0))
@@ -58,12 +58,10 @@ public class DepositCommand {
         valuesMap.put("player-balance", Main.econ.format(EconomyManager.getAccBal(executor.getUniqueId())));
         valuesMap.put("amount", Main.econ.format(amount));
 
-        StringSubstitutor sub = new StringSubstitutor(valuesMap);
-
         if (!EconomyManager.getBankMembers(bank).contains(executor.getUniqueId())) {
             executor.sendMessage(
                     Component.text(
-                            sub.replace(Main.getMessage("not-member-of-bank"))
+                            Formatter.format(Main.getMessage("not-member-of-bank"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -72,7 +70,7 @@ public class DepositCommand {
         if (EconomyManager.getAccBal(executor.getUniqueId()) < amount) {
             executor.sendMessage(
                     Component.text(
-                            sub.replace(Main.getMessage("insufficient-funds-player"))
+                            Formatter.format(Main.getMessage("insufficient-funds-player"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -83,7 +81,7 @@ public class DepositCommand {
 
         executor.sendMessage(
                 Component.text(
-                        sub.replace(Main.getMessage("withdrawn"))
+                        Formatter.format(Main.getMessage("withdrawn"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

@@ -37,17 +37,17 @@ public class EconomyProvider implements Economy {
 
     @Override
     public String format(double v) {
-        return main.getConfig().getString("symbol") + v;
+        return main.getConfig().getString("economy.symbol") + v;
     }
 
     @Override
     public String currencyNamePlural() {
-        return main.getConfig().getString("name-plural");
+        return main.getConfig().getString("economy.name-plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return main.getConfig().getString("name-singular");
+        return main.getConfig().getString("economy.name-singular");
     }
 
     @Override

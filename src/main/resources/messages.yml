@@ -12,23 +12,84 @@
 insufficient-funds-player: "Insufficient funds to complete transaction"  # Placeholders: player, player-balance
 
 # When a bank does not have enough funds for the requested transaction
-insufficient-funds-bank: "Insufficient funds to complete transaction"    # Placeholders: bank, bank-balance
+insufficient-funds-bank: "Insufficient funds to complete transaction"  # Placeholders: bank, bank-balance
 
 # When a player is not a member of a bank
-not-member-of-bank: "You are not a member of {bank}"                     # Placeholders: bank
+not-member-of-bank: "You are not a member of {bank}"  # Placeholders: bank
 
 # When a player sent money to another player
-sent: "Sent {amount} to {receiver}"                                      # Placeholders: amount, receiver, sender
+sent: "Sent {amount} to {receiver}"  # Placeholders: amount, receiver, sender
 
 # When a player received money from another player
-received: "Received {amount} from {sender}"                              # Placeholders: amount, receiver, sender
+received: "Received {amount} from {sender}"  # Placeholders: amount, receiver, sender
 
 # When a player withdrew money from a bank
-withdrawn: "Withdrawn {amount} from {bank}"                              # Placeholders: amount, bank
+withdrawn: "Withdrawn {amount} from {bank}"  # Placeholders: amount, bank
 
 # When a player deposited money into a bank
-deposited: "Deposited {amount} into {bank}"                              # Placeholders: amount, bank
+deposited: "Deposited {amount} into {bank}"  # Placeholders: amount, bank
 
 # Balance
-balance: "{player}'s balance is {balance}"                               # Placeholders: player, balance
+balance: "{player}'s balance is {balance}"  # Placeholders: player, balance
 
+# ===== Admin command messages ===== #
+
+# When a player deposits money into their account
+player-deposit: "Deposited {amount} into {player}'s account. New balance: {balance}"  # Placeholders: amount, player, balance
+
+# When a player withdraws money from their account
+player-withdraw: "Withdrawn {amount} from {player}'s account. New balance: {balance}" # Placeholders: amount, player, balance
+
+# When getting a player's balance
+player-balance: "{player}'s balance is {balance}"  # Placeholders: player, balance
+
+# When setting a player's balance
+player-set-balance: "Set {player}'s balance to {balance}"  # Placeholders: player, balance
+
+# When a player deposits money into a bank account
+bank-deposit: "Deposited {amount} into {bank}. New balance: {balance}"  # Placeholders: amount, bank, balance
+
+# When a player withdraws money from a bank account
+bank-withdraw: "Withdrawn {amount} from {bank}. New balance: {balance}"  # Placeholders: amount, bank, balance
+
+# When getting a bank's balance
+bank-balance: "{bank}'s balance is {balance}"  # Placeholders: bank, balance
+
+# When setting a bank's balance
+bank-set-balance: "Set {bank}'s balance to {balance}"  # Placeholders: bank, balance
+
+# When getting a bank's owner
+bank-owner: "{bank}'s owner is {owner}"  # Placeholders: bank, owner
+
+# When setting a bank's owner
+bank-set-owner: "Set owner of {bank} to {owner}"  # Placeholders: bank, owner
+
+# When confirming the ownership change of a bank
+bank-owner-confirmation: "Are you sure you want to change the owner of {bank}?"  # Placeholders: bank
+
+# Confirm button message for actions like ownership change or bank deletion
+confirm-action: "Click here to confirm"  # No placeholders
+
+# When getting a list of bank members
+bank-members: "{bank}'s members: {members}"  # Placeholders: bank, members
+
+# When adding a member to a bank
+bank-add-member: "Added {player} to {bank}"  # Placeholders: player, bank
+
+# When removing a member from a bank
+bank-remove-member: "Removed {player} from {bank}"  # Placeholders: player, bank
+
+# When deleting a bank (with confirmation message)
+bank-delete-confirmation: "Are you sure you want to delete {bank}? All the money in it will be deleted."  # Placeholders: bank
+
+# When a bank is deleted
+bank-deleted: "Deleted {bank}"  # Placeholders: bank
+
+# When creating a bank owned by another player
+bank-create-other: "Created {bank} with owner {owner}"  # Placeholders: bank, owner
+
+# When trying to create a bank that already exists
+bank-already-exists: "A bank called {bank} already exists."  # Placeholders: bank
+
+# When creating a bank for oneself
+bank-create-self: "Created {bank} with owner {owner}"  # Placeholders: bank, owner

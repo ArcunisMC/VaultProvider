@@ -11,6 +11,7 @@ economy:
   name-plural: "dollars"
 
   # Enable or disable commands
+  # The admin economy command is always enabled. It is operator only and provides functions to manage the economy
   commands:
     balance: true # Would not recommend disabling this one
     pay: true

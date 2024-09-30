@@ -2,6 +2,7 @@ package com.arcunis.vaultprovider.commands;
 
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.EconomyManager;
+import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -191,14 +192,14 @@ public class EconomyAdminCommand {
             double amount = DoubleArgumentType.getDouble(ctx, "amount");
             double newBal = EconomyManager.depositAcc(player.getUniqueId(), amount);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("amount", amount);
+            valuesMap.put("player", player.getName());
+            valuesMap.put("balance", newBal);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                    "Deposited %s into %s's account. New balance: %s"
-                            .formatted(
-                                    Main.econ.format(amount),
-                                    player.getName(),
-                                    Main.econ.format(newBal)
-                            )
+                            Formatter.format(Main.getMessage("player-deposit"), valuesMap)
                 ).color(NamedTextColor.GOLD)
             );
 
@@ -211,14 +212,14 @@ public class EconomyAdminCommand {
             double amount = DoubleArgumentType.getDouble(ctx, "amount");
             double newBal = EconomyManager.withdrawAcc(player.getUniqueId(), amount);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("amount", amount);
+            valuesMap.put("player", player.getName());
+            valuesMap.put("balance", newBal);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Withdrawn %s from %s's account. New balance: %s"
-                                    .formatted(
-                                            Main.econ.format(amount),
-                                            player.getName(),
-                                            Main.econ.format(newBal)
-                                    )
+                            Formatter.format(Main.getMessage("player-withdraw"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 

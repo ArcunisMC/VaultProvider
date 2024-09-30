@@ -4,9 +4,7 @@ import com.arcunis.vaultprovider.commands.*;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,8 +25,6 @@ public final class Main extends JavaPlugin implements Listener {
     public static Logger logger;
 
     public static Economy econ;
-    public static Permission perm;
-    public static Chat chat;
 
     @Override
     public void onEnable() {

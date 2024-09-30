@@ -1,7 +1,5 @@
 package com.arcunis.vaultprovider;
 
-import org.bukkit.Bukkit;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;

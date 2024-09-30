@@ -12,7 +12,8 @@ economy:
 
   # Enable or disable commands
   commands:
-    baltop: false
+    balance: true # Would not recommend disabling this one
+    pay: true
     deposit: true
     withdraw: true
 

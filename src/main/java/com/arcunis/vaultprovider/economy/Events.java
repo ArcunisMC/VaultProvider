@@ -18,7 +18,7 @@ public class Events implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (EconomyManager.hasAcc(player.getUniqueId())) return;
-        Main.logger.info("Created acc for player %s".formatted(event.getPlayer().getName()));
+        Main.logger.info("Created acc for player %s".formatted(player.getName()));
         EconomyManager.createAcc(player.getUniqueId());
         EconomyManager.depositAcc(player.getUniqueId(), plugin.getConfig().getDouble("initial-acc-bal"));
     }

@@ -2,14 +2,14 @@ package com.arcunis.vaultprovider;
 
 import com.arcunis.vaultprovider.economy.EconomyProvider;
 import com.arcunis.vaultprovider.economy.VPEconomy;
-import com.arcunis.vaultprovider.permission.PermissionProvider;
-import com.arcunis.vaultprovider.permission.VPPermission;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +28,7 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        saveResource("messages.yml", false);
 
         // Create data folder
         if (!getDataFolder().exists()) getDataFolder().mkdir();
@@ -47,13 +48,19 @@ public final class Main extends JavaPlugin implements Listener {
         }
 
         // Initialize permission
-        if (getConfig().getBoolean("permission.enabled")) {
-            perm = new PermissionProvider(this);
-            new VPPermission().onEnable(this);
-        }
 
         // Initialize chat
 
+    }
+
+    public static @Nullable String getMessage(String message) {
+        try {
+            YamlConfiguration messages = new YamlConfiguration();
+            messages.load(new File(dataPath.toFile(), "messages.yml"));
+            return messages.getString(message);
+        } catch (IOException | InvalidConfigurationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

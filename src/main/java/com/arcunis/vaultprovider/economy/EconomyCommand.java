@@ -18,7 +18,7 @@ import java.util.*;
 public class EconomyCommand extends Command {
 
     public EconomyCommand(@NotNull JavaPlugin plugin) {
-        super(plugin, "economy", "Manage player accounts and banks", "/eco [acc/bank] <name> [deposit/withdraw/getBal/setBal/...] ...", List.of("eco"));
+        super(plugin, "economy-old", "Manage player accounts and banks", "/eco [acc/bank] <name> [deposit/withdraw/getBal/setBal/...] ...", List.of("eco-old"));
         setPermission(new Permission("vaultprovider.manage", PermissionDefault.OP).name);
         register();
     }

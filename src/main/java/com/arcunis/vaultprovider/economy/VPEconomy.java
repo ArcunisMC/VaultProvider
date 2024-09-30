@@ -34,8 +34,9 @@ public class VPEconomy {
         LifecycleEventManager<Plugin> pluginLifecycleManager = plugin.getLifecycleManager();
         pluginLifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            new EconomyBrigadierCommand(commands);
             new EconomyAdminCommand(commands);
+            if (plugin.getConfig().getBoolean("economy.commands.balance")) new BalanceCommand(commands);
+            if (plugin.getConfig().getBoolean("economy.commands.pay")) new PayCommand(commands);
             if (plugin.getConfig().getBoolean("economy.commands.deposit")) new DepositCommand(commands);
             if (plugin.getConfig().getBoolean("economy.commands.withdraw")) new WithdrawCommand(commands);
         });

@@ -13,6 +13,7 @@ economy:
   # Enable or disable commands
   commands:
     baltop: false
+    deposit: true
     withdraw: true
 
 permission:

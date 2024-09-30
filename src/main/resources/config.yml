@@ -13,6 +13,7 @@ economy:
   # Enable or disable commands
   commands:
     baltop: false
+    withdraw: true
 
 permission:
   enabled: false

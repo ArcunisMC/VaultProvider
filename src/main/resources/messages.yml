@@ -1,0 +1,34 @@
+# HOW TO USE PLACEHOLDERS
+#
+# Every message has a comment like this one with what placeholders it has access to.
+# You can use a placeholder by putting curly brackets around the placeholder name
+#
+# Example:
+# Data: player = steve, balance = 153
+# Message: {Player} has a balance of {balance}
+# Result: steve has a balance of 153
+
+# When a player does not have enough funds for the requested transaction
+insufficient-funds-player: Insufficient funds to complete transaction.  # Placeholders: player, player-balance
+
+# When a bank does not have enough funds for the requested transaction
+insufficient-funds-bank: Insufficient funds to complete transaction.    # Placeholders: bank, bank-balance
+
+# When a player is not a member of a bank
+not-member-of-bank: You are not a member of {bank}.                     # Placeholders: bank
+
+# When a player sent money to another player
+sent: Sent {amount} to {receiver}.                                      # Placeholders: amount, receiver, sender
+
+# When a player received money from another player
+received: Received {amount} from {sender}.                              # Placeholders: amount, receiver, sender
+
+# When a player withdrew money from a bank
+withdrawn: Withdrawn {amount} from {bank}.                              # Placeholders: amount, bank
+
+# When a player deposited money into a bank
+deposited: Deposited {amount} into {bank}.                              # Placeholders: amount, bank
+
+# Balance
+balance: {player}'s balance is {balance}                                # Placeholders: player, balance
+

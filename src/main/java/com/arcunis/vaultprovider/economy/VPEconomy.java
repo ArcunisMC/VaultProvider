@@ -21,8 +21,7 @@ public class VPEconomy {
             Class.forName("net.milkbowl.vault.economy.Economy");
             plugin.getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, Main.econ, plugin, ServicePriority.Normal);
         } catch (ClassNotFoundException e) {
-            Main.logger.warning("Could not register economy provider. Could not find Vault. Disabling...");
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            Main.logger.warning("Could not register economy provider. REASON: Could not find Vault");
             throw new RuntimeException(e);
         }
 
@@ -36,6 +35,7 @@ public class VPEconomy {
         pluginLifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             new EconomyBrigadierCommand(commands);
+            if (plugin.getConfig().getBoolean("economy.commands.withdraw")) new WithdrawCommand(commands);
         });
     }
 

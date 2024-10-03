@@ -53,15 +53,15 @@ public class DepositCommand {
 
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("bank", bank);
-        valuesMap.put("bank-balance", Main.econ.format(EconomyManager.getBankBal(bank)));
+        valuesMap.put("bank_balance", Main.econ.format(EconomyManager.getBankBal(bank)));
         valuesMap.put("player", executor.getName());
-        valuesMap.put("player-balance", Main.econ.format(EconomyManager.getAccBal(executor.getUniqueId())));
+        valuesMap.put("player_balance", Main.econ.format(EconomyManager.getAccBal(executor.getUniqueId())));
         valuesMap.put("amount", Main.econ.format(amount));
 
         if (!EconomyManager.getBankMembers(bank).contains(executor.getUniqueId())) {
             executor.sendMessage(
                     Component.text(
-                            Formatter.format(Main.getMessage("not-member-of-bank"), valuesMap)
+                            Formatter.formatString(Main.getMessage("player-not-member"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -70,7 +70,7 @@ public class DepositCommand {
         if (EconomyManager.getAccBal(executor.getUniqueId()) < amount) {
             executor.sendMessage(
                     Component.text(
-                            Formatter.format(Main.getMessage("insufficient-funds-player"), valuesMap)
+                            Formatter.formatString(Main.getMessage("insufficient-funds-player"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -81,7 +81,7 @@ public class DepositCommand {
 
         executor.sendMessage(
                 Component.text(
-                        Formatter.format(Main.getMessage("withdrawn"), valuesMap)
+                        Formatter.formatString(Main.getMessage("bank-deposit"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

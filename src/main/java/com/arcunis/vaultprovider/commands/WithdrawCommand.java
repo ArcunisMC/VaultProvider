@@ -53,13 +53,13 @@ public class WithdrawCommand {
 
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("bank", bank);
-        valuesMap.put("bank-balance", Main.econ.format(EconomyManager.getBankBal(bank)));
+        valuesMap.put("bank_balance", Main.econ.format(EconomyManager.getBankBal(bank)));
         valuesMap.put("amount", Main.econ.format(amount));
         
         if (!EconomyManager.getBankMembers(bank).contains(executor.getUniqueId())) {
             executor.sendMessage(
                     Component.text(
-                            Formatter.format(Main.getMessage("not-member-of-bank"), valuesMap)
+                            Formatter.formatString(Main.getMessage("player-not-member"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -68,7 +68,7 @@ public class WithdrawCommand {
         if (EconomyManager.getBankBal(bank) < amount) {
             executor.sendMessage(
                     Component.text(
-                            Formatter.format(Main.getMessage("insufficient-funds-bank"), valuesMap)
+                            Formatter.formatString(Main.getMessage("insufficient-funds-bank"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -79,7 +79,7 @@ public class WithdrawCommand {
 
         executor.sendMessage(
                 Component.text(
-                        Formatter.format(Main.getMessage("withdrawn"), valuesMap)
+                        Formatter.formatString(Main.getMessage("withdrawn"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

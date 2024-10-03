@@ -16,7 +16,6 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -112,7 +111,7 @@ public class EconomyAdminCommand {
                                                                                         .then(
                                                                                                 // Confirm argument to make sure admins dont change an owner on accident
                                                                                                 Commands.argument("confirmed", BoolArgumentType.bool())
-                                                                                                        .executes(BankExecutions::setOwner)
+                                                                                                        .executes(BankExecutions::setOwnerConfirmed)
                                                                                         )
                                                                         )
                                                         ).then(
@@ -142,7 +141,7 @@ public class EconomyAdminCommand {
                                                                         .then(
                                                                                 // Confirm argument to make sure admins dont delete the bank on accident
                                                                                 Commands.argument("confirmed", BoolArgumentType.bool())
-                                                                                        .executes(BankExecutions::delete)
+                                                                                        .executes(BankExecutions::deleteConfirmed)
                                                                         )
                                                         )
                                         )
@@ -195,11 +194,11 @@ public class EconomyAdminCommand {
             Map<String, Object> valuesMap = new HashMap<>();
             valuesMap.put("amount", amount);
             valuesMap.put("player", player.getName());
-            valuesMap.put("balance", newBal);
+            valuesMap.put("player_balance", newBal);
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            Formatter.format(Main.getMessage("player-deposit"), valuesMap)
+                            Formatter.formatString(Main.getMessage("player-deposit"), valuesMap)
                 ).color(NamedTextColor.GOLD)
             );
 
@@ -215,11 +214,11 @@ public class EconomyAdminCommand {
             Map<String, Object> valuesMap = new HashMap<>();
             valuesMap.put("amount", amount);
             valuesMap.put("player", player.getName());
-            valuesMap.put("balance", newBal);
+            valuesMap.put("player_balance", newBal);
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            Formatter.format(Main.getMessage("player-withdraw"), valuesMap)
+                            Formatter.formatString(Main.getMessage("player-withdraw"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -231,7 +230,15 @@ public class EconomyAdminCommand {
             Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
             double balance = EconomyManager.getAccBal(player.getUniqueId());
 
-            ctx.getSource().getSender().sendMessage(Component.text("%s's balance is %s".formatted(player.getName(), Main.econ.format(balance))));
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("player", player.getName());
+            valuesMap.put("player_balance", balance);
+
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("player-balance"), valuesMap)
+                    ).color(NamedTextColor.GOLD)
+            );
 
             return Command.SINGLE_SUCCESS;
         }
@@ -241,13 +248,13 @@ public class EconomyAdminCommand {
             double newBal = DoubleArgumentType.getDouble(ctx, "value");
             EconomyManager.setAccBal(player.getUniqueId(), newBal);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("player", player.getName());
+            valuesMap.put("player_balance", newBal);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Set %s's balance to %s"
-                                    .formatted(
-                                            player.getName(),
-                                            Main.econ.format(newBal)
-                                    )
+                            Formatter.formatString(Main.getMessage("player-set-balance"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -267,13 +274,14 @@ public class EconomyAdminCommand {
 
             double newBal = EconomyManager.depositBank(bank, amount);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("amount", amount);
+            valuesMap.put("bank", bank);
+            valuesMap.put("bank_balance", newBal);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Set %s's balance to %s"
-                                    .formatted(
-                                            bank,
-                                            Main.econ.format(newBal)
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-deposit"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -287,13 +295,14 @@ public class EconomyAdminCommand {
 
             double newBal = EconomyManager.withdrawBank(bank, amount);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("amount", amount);
+            valuesMap.put("bank", bank);
+            valuesMap.put("bank_balance", newBal);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Set %s's balance to %s"
-                                    .formatted(
-                                            bank,
-                                            Main.econ.format(newBal)
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-withdraw"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -306,13 +315,13 @@ public class EconomyAdminCommand {
 
             double balance = EconomyManager.getBankBal(bank);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("bank_balance", balance);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "%s's balance is %s"
-                                    .formatted(
-                                            bank,
-                                            Main.econ.format(balance)
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-balance"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -326,13 +335,13 @@ public class EconomyAdminCommand {
 
             EconomyManager.setBankBal(bank, newBal);
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("bank_balance", newBal);
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Set %s's balance to %s"
-                                    .formatted(
-                                            bank,
-                                            Main.econ.format(newBal)
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-set-balance"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -344,13 +353,13 @@ public class EconomyAdminCommand {
             String bank = StringArgumentType.getString(ctx, "bank");
             OfflinePlayer owner = Bukkit.getOfflinePlayer(EconomyManager.getBankOwner(bank));
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("owner", owner.getName());
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "%s's owner is %s"
-                                    .formatted(
-                                            bank,
-                                            owner.getName()
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-owner"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -360,40 +369,44 @@ public class EconomyAdminCommand {
         public static int setOwner(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
             String bank = StringArgumentType.getString(ctx, "bank");
-            Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(EconomyManager.getBankOwner(bank));
+            Player newOwner = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
 
-            if (!BoolArgumentType.getBool(ctx, "confirmed")) {
-
-                ctx.getSource().getSender().sendMessage(
-                        Component.text(
-                                "Are you sure you want to change the owner of %s?"
-                                        .formatted(
-                                                bank
-                                        )
-                        ).color(NamedTextColor.GOLD)
-                );
-                ctx.getSource().getSender().sendMessage(
-                        Component.text("Click here to confirm")
-                                .color(NamedTextColor.GREEN)
-                                .clickEvent(
-                                        ClickEvent.clickEvent(
-                                                ClickEvent.Action.RUN_COMMAND,
-                                                ctx.getInput() + " true")
-                                )
-                );
-
-                return Command.SINGLE_SUCCESS;
-            }
-
-            EconomyManager.setBankOwner(bank, player.getUniqueId());
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("old_owner", owner.getName());
+            valuesMap.put("new_owner", newOwner.getName());
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Set owner of %s to %s"
-                                    .formatted(
-                                            bank,
-                                            player.getName()
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-owner-conformation"), valuesMap)
+                    ).color(NamedTextColor.GOLD)
+            );
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("confirm-action"), valuesMap)
+                    ).color(NamedTextColor.GREEN)
+            );
+
+            return Command.SINGLE_SUCCESS;
+        }
+
+        public static int setOwnerConfirmed(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+
+            String bank = StringArgumentType.getString(ctx, "bank");
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(EconomyManager.getBankOwner(bank));
+            Player newOwner = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
+
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("old_owner", owner.getName());
+            valuesMap.put("new_owner", newOwner.getName());
+
+            EconomyManager.setBankOwner(bank, newOwner.getUniqueId());
+
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("bank-set-owner"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -404,28 +417,23 @@ public class EconomyAdminCommand {
 
             String bank = StringArgumentType.getString(ctx, "bank");
 
-            Set<OfflinePlayer> members = new HashSet<>();
+            Set<String> members = new HashSet<>();
             for (UUID uuid : EconomyManager.getBankMembers(bank)) {
-                members.add(Bukkit.getOfflinePlayer(uuid));
-            }
-            Component message = Component.text("%s's members:\n".formatted(bank));
-            for (Iterator<OfflinePlayer> it = members.iterator(); it.hasNext();) {
-
-                OfflinePlayer offlinePlayer = it.next();
-
-                if (offlinePlayer.getPlayer() != null) {
-                    message = message.append(Component.text(offlinePlayer.getName()).hoverEvent(offlinePlayer.getPlayer().asHoverEvent()));
-                } else {
-                    message = message.append(Component.text(offlinePlayer.getName()));
-                }
-
-                if (it.hasNext()) {
-                    message = message.append(Component.text(", "));
-                }
-
+                members.add(Bukkit.getOfflinePlayer(uuid).getName());
             }
 
-            ctx.getSource().getSender().sendMessage(message.color(NamedTextColor.GOLD));
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("members", String.join(", ", members));
+
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(
+                                    Main.getMessage("bank-members"),
+                                    valuesMap
+                            )
+                    ).color(NamedTextColor.GOLD)
+            );
 
             return Command.SINGLE_SUCCESS;
         }
@@ -435,16 +443,24 @@ public class EconomyAdminCommand {
             String bank = StringArgumentType.getString(ctx, "bank");
             Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("player", player.getName());
+
+            if (EconomyManager.getBankMembers(bank).contains(player.getUniqueId())) {
+                ctx.getSource().getSender().sendMessage(
+                        Component.text(
+                                Formatter.formatString(Main.getMessage("member-already-exists"), valuesMap)
+                        ).color(NamedTextColor.DARK_RED)
+                );
+            }
+
             EconomyManager.addBankMember(bank, player.getUniqueId());
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Added %s to %s"
-                                    .formatted(
-                                            player.getName(),
-                                            bank
-                                    )
-                            ).color(NamedTextColor.GOLD)
+                            Formatter.formatString(Main.getMessage("bank-add-member"), valuesMap)
+                    ).color(NamedTextColor.GOLD)
             );
 
             return Command.SINGLE_SUCCESS;
@@ -457,13 +473,13 @@ public class EconomyAdminCommand {
 
             EconomyManager.removeBankMember(bank, player.getUniqueId());
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("player", player.getName());
+
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Removed %s from %s"
-                                    .formatted(
-                                            player.getName(),
-                                            bank
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-remove-member"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -474,35 +490,34 @@ public class EconomyAdminCommand {
 
             String bank = StringArgumentType.getString(ctx, "bank");
 
-            if (!BoolArgumentType.getBool(ctx, "confirmed")) {
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
 
-                ctx.getSource().getSender().sendMessage(
-                        Component.text(
-                                "Are you sure you want to delete %s? All the money in it will be deleted."
-                                        .formatted(
-                                                bank
-                                        )
-                        ).color(NamedTextColor.GOLD)
-                );
-                ctx.getSource().getSender().sendMessage(
-                        Component.text("Click here to confirm")
-                                .color(NamedTextColor.GREEN)
-                                .clickEvent(
-                                        ClickEvent.clickEvent(
-                                                ClickEvent.Action.RUN_COMMAND,
-                                                ctx.getInput() + " true")
-                                )
-                );
-                return Command.SINGLE_SUCCESS;
-            }
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("bank-delete-confirmation"), valuesMap)
+                    ).color(NamedTextColor.GOLD)
+            );
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("confirm-action"), valuesMap)
+                    ).color(NamedTextColor.GREEN)
+            );
+
+            return Command.SINGLE_SUCCESS;
+        }
+
+        public static int deleteConfirmed(CommandContext<CommandSourceStack> ctx) {
+
+            String bank = StringArgumentType.getString(ctx, "bank");
+
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
 
             EconomyManager.deleteBank(bank);
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Deleted %s"
-                                    .formatted(
-                                            bank
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-deleted"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -514,13 +529,14 @@ public class EconomyAdminCommand {
             String bank = StringArgumentType.getString(ctx, "bank");
             Player owner = ctx.getArgument("owner", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("owner", owner.getName());
+
             if (EconomyManager.hasBank(bank)) {
                 ctx.getSource().getSender().sendMessage(
                         Component.text(
-                                "A bank called %s already exists."
-                                        .formatted(
-                                                bank
-                                        )
+                                Formatter.formatString(Main.getMessage("bank-already-exists"), valuesMap)
                         ).color(NamedTextColor.DARK_RED)
                 );
             }
@@ -529,11 +545,7 @@ public class EconomyAdminCommand {
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Created %s with owner %s"
-                                    .formatted(
-                                            bank,
-                                            owner.getName()
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-create"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 
@@ -545,13 +557,14 @@ public class EconomyAdminCommand {
             String bank = StringArgumentType.getString(ctx, "bank");
             Player owner = (Player) ctx.getSource().getSender();
 
+            Map<String, Object> valuesMap = new HashMap<>();
+            valuesMap.put("bank", bank);
+            valuesMap.put("owner", owner.getName());
+
             if (EconomyManager.hasBank(bank)) {
                 ctx.getSource().getSender().sendMessage(
                         Component.text(
-                                "A bank called %s already exists."
-                                        .formatted(
-                                                bank
-                                        )
+                                Formatter.formatString(Main.getMessage("bank-already-exists"), valuesMap)
                         ).color(NamedTextColor.DARK_RED)
                 );
             }
@@ -560,11 +573,7 @@ public class EconomyAdminCommand {
 
             ctx.getSource().getSender().sendMessage(
                     Component.text(
-                            "Created %s with owner %s"
-                                    .formatted(
-                                            bank,
-                                            owner.getName()
-                                    )
+                            Formatter.formatString(Main.getMessage("bank-create"), valuesMap)
                     ).color(NamedTextColor.GOLD)
             );
 

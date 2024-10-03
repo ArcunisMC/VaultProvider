@@ -46,12 +46,11 @@ public class PayCommand {
         valuesMap.put("receiver", receiver.getName());
         valuesMap.put("amount", Main.econ.format(amount));
         valuesMap.put("player", executor.getName());
-        valuesMap.put("player-balance", Main.econ.format(EconomyManager.getAccBal(executor.getUniqueId())));
 
         if (EconomyManager.getAccBal(executor.getUniqueId()) < amount) {
             executor.sendMessage(
                     Component.text(
-                        Formatter.format(Main.getMessage("insufficient-funds-player"), valuesMap)
+                        Formatter.formatString(Main.getMessage("insufficient-funds-player"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
             return Command.SINGLE_SUCCESS;
@@ -62,12 +61,12 @@ public class PayCommand {
 
         executor.sendMessage(
                 Component.text(
-                        Formatter.format(Main.getMessage("money-sent"), valuesMap)
+                        Formatter.formatString(Main.getMessage("player-sent"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
         receiver.sendMessage(
                 Component.text(
-                        Formatter.format(Main.getMessage("money-received"), valuesMap)
+                        Formatter.formatString(Main.getMessage("player-received"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

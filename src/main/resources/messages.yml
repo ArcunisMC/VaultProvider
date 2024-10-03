@@ -8,55 +8,56 @@
 # Message: {Player} has a balance of {balance}
 # Result: steve has a balance of 153
 
+# ESCAPE CHARACTERS
+# Escape characters represent special characters like a new line
+#
+# Single quote: \
+# Double quote: \"
+# Backslash: \\
+# New line: \n
+# Tab: \t
+
 # When a player does not have enough funds for the requested transaction
-insufficient-funds-player: "Insufficient funds to complete transaction"  # Placeholders: player, player-balance
+player-insufficient-funds: "Insufficient funds to complete transaction for {player}. Current balance: {player_balance}"  # Placeholders: player, player_balance
 
 # When a bank does not have enough funds for the requested transaction
-insufficient-funds-bank: "Insufficient funds to complete transaction"  # Placeholders: bank, bank-balance
+bank-insufficient-funds: "Insufficient funds in {bank} to complete transaction. Current balance: {bank_balance}"  # Placeholders: bank, bank_balance
 
 # When a player is not a member of a bank
-not-member-of-bank: "You are not a member of {bank}"  # Placeholders: bank
+player-not-member: "{player} is not a member of {bank}"  # Placeholders: player, bank
 
-# When a player sent money to another player
-sent: "Sent {amount} to {receiver}"  # Placeholders: amount, receiver, sender
+# When a player sends money to another player
+player-send: "You sent {amount} to {receiver}"  # Placeholders: sender, amount, receiver
 
-# When a player received money from another player
-received: "Received {amount} from {sender}"  # Placeholders: amount, receiver, sender
-
-# When a player withdrew money from a bank
-withdrawn: "Withdrawn {amount} from {bank}"  # Placeholders: amount, bank
-
-# When a player deposited money into a bank
-deposited: "Deposited {amount} into {bank}"  # Placeholders: amount, bank
-
-# Balance
-balance: "{player}'s balance is {balance}"  # Placeholders: player, balance
-
-# ===== Admin command messages ===== #
+# When a player receives money from another player
+player-receive: "You received {amount} from {sender}"  # Placeholders: receiver, amount, sender
 
 # When a player deposits money into their account
-player-deposit: "Deposited {amount} into {player}'s account. New balance: {balance}"  # Placeholders: amount, player, balance
+player-deposit: "Deposited {amount} into {player}'s account. New balance: {player_balance}"  # Placeholders: amount, player, player_balance
 
 # When a player withdraws money from their account
-player-withdraw: "Withdrawn {amount} from {player}'s account. New balance: {balance}" # Placeholders: amount, player, balance
+player-withdraw: "Withdrawn {amount} from {player}'s account. New balance: {player_balance}" # Placeholders: amount, player, player_balance
 
 # When getting a player's balance
-player-balance: "{player}'s balance is {balance}"  # Placeholders: player, balance
+player-balance: "{player}'s balance is {player_balance}"  # Placeholders: player, player_balance
+
+# When getting your own balance
+player-self-balance: "Your balance is {player_balance}"  # Placeholders: player, player_balance
 
 # When setting a player's balance
-player-set-balance: "Set {player}'s balance to {balance}"  # Placeholders: player, balance
+player-set-balance: "Set {player}'s balance to {player_balance}"  # Placeholders: player, player_balance
 
 # When a player deposits money into a bank account
-bank-deposit: "Deposited {amount} into {bank}. New balance: {balance}"  # Placeholders: amount, bank, balance
+bank-deposit: "Deposited {amount} into {bank}"  # Placeholders: amount, bank
 
 # When a player withdraws money from a bank account
-bank-withdraw: "Withdrawn {amount} from {bank}. New balance: {balance}"  # Placeholders: amount, bank, balance
+bank-withdraw: "Withdrawn {amount} from {bank}"  # Placeholders: amount, bank
 
 # When getting a bank's balance
-bank-balance: "{bank}'s balance is {balance}"  # Placeholders: bank, balance
+bank-balance: "{bank}'s balance is {bank_balance}"  # Placeholders: bank, bank_balance
 
 # When setting a bank's balance
-bank-set-balance: "Set {bank}'s balance to {balance}"  # Placeholders: bank, balance
+bank-set-balance: "Set {bank}'s balance to {bank_balance}"  # Placeholders: bank, bank_balance
 
 # When getting a bank's owner
 bank-owner: "{bank}'s owner is {owner}"  # Placeholders: bank, owner
@@ -71,10 +72,13 @@ bank-owner-confirmation: "Are you sure you want to change the owner of {bank}?" 
 confirm-action: "Click here to confirm"  # No placeholders
 
 # When getting a list of bank members
-bank-members: "{bank}'s members: {members}"  # Placeholders: bank, members
+bank-members: "{bank}'s members:\n{members}"  # Placeholders: bank, members
 
 # When adding a member to a bank
 bank-add-member: "Added {player} to {bank}"  # Placeholders: player, bank
+
+# When a player is already a member of a bank
+member-already-exists: "{player} is already a member of {bank}"  # Placeholders: player, bank
 
 # When removing a member from a bank
 bank-remove-member: "Removed {player} from {bank}"  # Placeholders: player, bank
@@ -86,10 +90,22 @@ bank-delete-confirmation: "Are you sure you want to delete {bank}? All the money
 bank-deleted: "Deleted {bank}"  # Placeholders: bank
 
 # When creating a bank owned by another player
-bank-create-other: "Created {bank} with owner {owner}"  # Placeholders: bank, owner
+bank-create: "Created {bank} with owner {owner}"  # Placeholders: bank, owner
 
 # When trying to create a bank that already exists
 bank-already-exists: "A bank called {bank} already exists."  # Placeholders: bank
 
-# When creating a bank for oneself
-bank-create-self: "Created {bank} with owner {owner}"  # Placeholders: bank, owner
+# When sending an invitation for a bank
+bank-invite-sent: "Invited {player} to join {bank}"  # Placeholders: bank, player
+
+# When revoking an invitation for a bank
+bank-invite-revoke: "Revoked {player}'s invitation"  # Placeholders: bank, player
+
+# When invited to a bank
+bank-invitation: "You received an invitation to join {bank}"  # Placeholders: bank
+
+# Accept button message for actions like joining a bank
+accept-action: "Click here to accept"  # No placeholders
+
+# When a player accepts an invite that does not exist
+accept-non

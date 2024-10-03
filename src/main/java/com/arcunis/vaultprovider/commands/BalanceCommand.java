@@ -27,7 +27,7 @@ public class BalanceCommand {
                         .executes(this::executeSelf)
                         .then(
                                 Commands.argument("player", ArgumentTypes.player())
-                                        .executes(this::executeOther)
+                                        .executes(this::other)
                         )
                         .build(),
                 "Get your or someone else's balance",
@@ -35,36 +35,36 @@ public class BalanceCommand {
         );
     }
 
-    private int executeSelf(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+    private int self(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
         Player player = (Player) ctx.getSource().getSender();
 
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("player", player.getName());
-        valuesMap.put("balance", Main.econ.format(EconomyManager.getAccBal(player.getUniqueId())));
+        valuesMap.put("player_balance", Main.econ.format(EconomyManager.getAccBal(player.getUniqueId())));
 
 
         player.sendMessage(
                 Component.text(
-                        Formatter.format(Main.getMessage("balance"), valuesMap)
+                        Formatter.formatString(Main.getMessage("player-self-balance"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 
         return Command.SINGLE_SUCCESS;
     }
 
-    private int executeOther(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+    private int other(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
         Player player = ctx.getArgument("player", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
 
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("player", player.getName());
-        valuesMap.put("balance", Main.econ.format(EconomyManager.getAccBal(player.getUniqueId())));
+        valuesMap.put("player_balance", Main.econ.format(EconomyManager.getAccBal(player.getUniqueId())));
 
 
         player.sendMessage(
                 Component.text(
-                        Formatter.format(Main.getMessage("balance"), valuesMap)
+                        Formatter.formatString(Main.getMessage("player-balance"), valuesMap)
                 ).color(NamedTextColor.GOLD)
         );
 

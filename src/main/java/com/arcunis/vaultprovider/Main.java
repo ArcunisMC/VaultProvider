@@ -43,6 +43,9 @@ public final class Main extends JavaPlugin implements Listener {
         db.createTables(this);
 
         // Initialize economy
+
+        econ = new EconomyProvider(this);
+
         try {
             Class.forName("net.milkbowl.vault.economy.Economy");
             getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, Main.econ, this, ServicePriority.Normal);
@@ -59,10 +62,10 @@ public final class Main extends JavaPlugin implements Listener {
         pluginLifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             new EconomyAdminCommand(commands);
-            if (getConfig().getBoolean("economy.commands.balance")) new BalanceCommand(commands);
-            if (getConfig().getBoolean("economy.commands.pay")) new PayCommand(commands);
-            if (getConfig().getBoolean("economy.commands.deposit")) new DepositCommand(commands);
-            if (getConfig().getBoolean("economy.commands.withdraw")) new WithdrawCommand(commands);
+            if (getConfig().getBoolean("commands.balance")) new BalanceCommand(commands);
+            if (getConfig().getBoolean("commands.pay")) new PayCommand(commands);
+            if (getConfig().getBoolean("commands.deposit")) new DepositCommand(commands);
+            if (getConfig().getBoolean("commands.withdraw")) new WithdrawCommand(commands);
         });
 
     }

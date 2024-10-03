@@ -1,25 +1,17 @@
-economy:
-  enabled: true
+# Initial balance for new player accounts
+initial-bal: 100
 
-  # Initial balance for new player accounts
-  initial-bal: 100
+# Currency symbol
+symbol: "$"
 
-  # Currency symbol
-  symbol: "$"
-  # Currency name
-  name-singular: "dollar"
-  name-plural: "dollars"
+# Currency name
+name-singular: "dollar"
+name-plural: "dollars"
 
-  # Enable or disable commands
-  # The admin economy command is always enabled. It is operator only and provides functions to manage the economy
-  commands:
-    balance: true # Would not recommend disabling this one
-    pay: true
-    deposit: true
-    withdraw: true
-
-permission:
-  enabled: false
-
-chat:
-  enabled: false
+# Enable or disable commands
+# The admin economy command is always enabled. It is operator only and provides functions to manage the economy
+commands:
+  balance: true
+  pay: true
+  deposit: true
+  withdraw: true

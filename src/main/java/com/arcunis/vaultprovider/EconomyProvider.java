@@ -1,5 +1,6 @@
 package com.arcunis.vaultprovider;
 
+import com.arcunis.vaultprovider.utils.Formatter;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -16,7 +17,7 @@ public class EconomyProvider implements Economy {
 
     @Override
     public boolean isEnabled() {
-        return main.getConfig().getBoolean("economy.enabled");
+        return true;
     }
 
     @Override
@@ -36,17 +37,17 @@ public class EconomyProvider implements Economy {
 
     @Override
     public String format(double v) {
-        return main.getConfig().getString("economy.symbol") + v;
+        return main.getConfig().getString("symbol") + Formatter.formatNumber(v, 3);
     }
 
     @Override
     public String currencyNamePlural() {
-        return main.getConfig().getString("economy.name-plural");
+        return main.getConfig().getString("name-plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return main.getConfig().getString("economy.name-singular");
+        return main.getConfig().getString("name-singular");
     }
 
     @Override

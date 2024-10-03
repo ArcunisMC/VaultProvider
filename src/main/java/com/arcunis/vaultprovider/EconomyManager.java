@@ -151,6 +151,7 @@ public class EconomyManager {
             statement.setDouble(3, 0);
             statement.executeUpdate();
             db.close();
+            addBankMember(name, owner);
         } catch (SQLException e) {
             db.close();
             throw new RuntimeException(e);
@@ -295,6 +296,7 @@ public class EconomyManager {
     }
 
     public static void removeBankMember(String name, UUID uuid) {
+        if (getBankOwner(name).equals(uuid)) throw new RuntimeException("Cannot remove owner from bank members");
         Database db = new Database();
         String deleteQuery = "DELETE FROM bank_members WHERE bank_name = ? AND member_uuid = ?";
         try {

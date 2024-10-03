@@ -36,7 +36,7 @@ public class EconomyAdminCommand {
                                 Commands.literal("account")
                                         .then(
                                                 // Player argument for the account
-                                                Commands.argument("account", ArgumentTypes.player())
+                                                Commands.argument("accounts", ArgumentTypes.players())
                                                         .then(
                                                                 // Deposit money into the account
                                                                 Commands.literal("deposit")
@@ -187,80 +187,92 @@ public class EconomyAdminCommand {
 
         public static int deposit(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-            double amount = DoubleArgumentType.getDouble(ctx, "amount");
-            double newBal = EconomyManager.depositAcc(player.getUniqueId(), amount);
+            List<Player> players = ctx.getArgument("accounts", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource());
 
-            Map<String, Object> valuesMap = new HashMap<>();
-            valuesMap.put("amount", amount);
-            valuesMap.put("player", player.getName());
-            valuesMap.put("player_balance", newBal);
+            for (Player player : players) {
+                double amount = DoubleArgumentType.getDouble(ctx, "amount");
+                double newBal = EconomyManager.depositAcc(player.getUniqueId(), amount);
 
-            ctx.getSource().getSender().sendMessage(
-                    Component.text(
-                            Formatter.formatString(Main.getMessage("player-deposit"), valuesMap)
-                ).color(NamedTextColor.GOLD)
-            );
+                Map<String, Object> valuesMap = new HashMap<>();
+                valuesMap.put("amount", amount);
+                valuesMap.put("player", player.getName());
+                valuesMap.put("player_balance", newBal);
+
+                ctx.getSource().getSender().sendMessage(
+                        Component.text(
+                                Formatter.formatString(Main.getMessage("player-deposit"), valuesMap)
+                        ).color(NamedTextColor.GOLD)
+                );
+            }
 
             return Command.SINGLE_SUCCESS;
         }
 
         public static int withdraw(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-            double amount = DoubleArgumentType.getDouble(ctx, "amount");
-            double newBal = EconomyManager.withdrawAcc(player.getUniqueId(), amount);
+            List<Player> players = ctx.getArgument("accounts", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource());
 
-            Map<String, Object> valuesMap = new HashMap<>();
-            valuesMap.put("amount", amount);
-            valuesMap.put("player", player.getName());
-            valuesMap.put("player_balance", newBal);
+            for (Player player : players) {
+                double amount = DoubleArgumentType.getDouble(ctx, "amount");
+                double newBal = EconomyManager.withdrawAcc(player.getUniqueId(), amount);
 
-            ctx.getSource().getSender().sendMessage(
-                    Component.text(
-                            Formatter.formatString(Main.getMessage("player-withdraw"), valuesMap)
-                    ).color(NamedTextColor.GOLD)
-            );
+                Map<String, Object> valuesMap = new HashMap<>();
+                valuesMap.put("amount", amount);
+                valuesMap.put("player", player.getName());
+                valuesMap.put("player_balance", newBal);
+
+                ctx.getSource().getSender().sendMessage(
+                        Component.text(
+                                Formatter.formatString(Main.getMessage("player-withdraw"), valuesMap)
+                        ).color(NamedTextColor.GOLD)
+                );
+            }
 
             return Command.SINGLE_SUCCESS;
         }
 
         public static int getBal(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-            double balance = EconomyManager.getAccBal(player.getUniqueId());
+            List<Player> players = ctx.getArgument("accounts", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource());
 
-            Map<String, Object> valuesMap = new HashMap<>();
-            valuesMap.put("player", player.getName());
-            valuesMap.put("player_balance", balance);
+            for (Player player : players) {
+                double balance = EconomyManager.getAccBal(player.getUniqueId());
 
-            ctx.getSource().getSender().sendMessage(
-                    Component.text(
-                            Formatter.formatString(Main.getMessage("player-balance"), valuesMap)
-                    ).color(NamedTextColor.GOLD)
-            );
+                Map<String, Object> valuesMap = new HashMap<>();
+                valuesMap.put("player", player.getName());
+                valuesMap.put("player_balance", balance);
+
+                ctx.getSource().getSender().sendMessage(
+                        Component.text(
+                                Formatter.formatString(Main.getMessage("player-balance"), valuesMap)
+                        ).color(NamedTextColor.GOLD)
+                );
+            }
 
             return Command.SINGLE_SUCCESS;
         }
+
         public static int setBal(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
 
-            Player player = ctx.getArgument("account", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource()).getFirst();
-            double newBal = DoubleArgumentType.getDouble(ctx, "value");
-            EconomyManager.setAccBal(player.getUniqueId(), newBal);
+            List<Player> players = ctx.getArgument("accounts", PlayerSelectorArgumentResolver.class).resolve(ctx.getSource());
 
-            Map<String, Object> valuesMap = new HashMap<>();
-            valuesMap.put("player", player.getName());
-            valuesMap.put("player_balance", newBal);
+            for (Player player : players) {
+                double newBal = DoubleArgumentType.getDouble(ctx, "value");
+                EconomyManager.setAccBal(player.getUniqueId(), newBal);
 
-            ctx.getSource().getSender().sendMessage(
-                    Component.text(
-                            Formatter.formatString(Main.getMessage("player-set-balance"), valuesMap)
-                    ).color(NamedTextColor.GOLD)
-            );
+                Map<String, Object> valuesMap = new HashMap<>();
+                valuesMap.put("player", player.getName());
+                valuesMap.put("player_balance", newBal);
+
+                ctx.getSource().getSender().sendMessage(
+                        Component.text(
+                                Formatter.formatString(Main.getMessage("player-set-balance"), valuesMap)
+                        ).color(NamedTextColor.GOLD)
+                );
+            }
 
             return Command.SINGLE_SUCCESS;
         }
-
 
     }
 

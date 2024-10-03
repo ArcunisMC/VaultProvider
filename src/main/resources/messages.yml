@@ -107,5 +107,8 @@ bank-invitation: "You received an invitation to join {bank}"  # Placeholders: ba
 # Accept button message for actions like joining a bank
 accept-action: "Click here to accept"  # No placeholders
 
-# When a player accepts an invite that does not exist
-accept-non
+# When a player accepts an invitation that does not exist
+accept-invalid-invite: "You do not have an invitation for {bank}. If you think that this is a mistake please message {owner}" # Placeholders: bank, owner
+
+# When a player invites someone but an invitation already exists
+invitation-already-exists: "{player} is already invited to {bank}. If you think they missed the invite please message them" # PlaceholderS: player, bank

@@ -14,6 +14,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -172,6 +173,22 @@ public class BankCommand {
         valuesMap.put("bank", bank);
         valuesMap.put("player", player.getName());
 
+        if (EconomyManager.getBankMembers(bank).contains(player.getUniqueId())) {
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("member-already-exists"), valuesMap)
+                    ).color(NamedTextColor.DARK_RED)
+            );
+        }
+
+        if (invites.get(bank).contains(player.getUniqueId())) {
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("invitation-already-exists"), valuesMap)
+                    ).color(NamedTextColor.DARK_RED)
+            );
+        }
+
         ctx.getSource().getSender().sendMessage(
                 Component.text(
                         Formatter.formatString(
@@ -196,6 +213,8 @@ public class BankCommand {
                                 Main.getMessage("accept-action"),
                                 new HashMap<>()
                         )
+                ).clickEvent(
+                        ClickEvent.runCommand("bank %s acceptInvite".formatted(bank))
                 ).color(NamedTextColor.GREEN)
         );
 

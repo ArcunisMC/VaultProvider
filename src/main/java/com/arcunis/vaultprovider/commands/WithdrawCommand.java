@@ -24,7 +24,9 @@ public class WithdrawCommand {
     public WithdrawCommand(Commands commands) {
         commands.register(
                 Commands.literal("withdraw")
-                        .requires(sourceStack -> sourceStack.getSender() instanceof Player)
+                        .requires(sourceStack ->
+                                sourceStack.getSender() instanceof Player && sourceStack.getSender().hasPermission("vaultprovider.withdraw")
+                        )
                         .then(
                                 Commands.argument("amount", DoubleArgumentType.doubleArg(0))
                                         .then(

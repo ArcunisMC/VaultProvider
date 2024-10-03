@@ -23,8 +23,10 @@ public class BalanceCommand {
     public BalanceCommand(Commands commands) {
         commands.register(
                 Commands.literal("balance")
-                        .requires(sourceStack -> sourceStack.getSender() instanceof Player)
-                        .executes(this::executeSelf)
+                        .requires(sourceStack ->
+                            sourceStack.getSender() instanceof Player && sourceStack.getSender().hasPermission("vaultprovider.balance")
+                        )
+                        .executes(this::self)
                         .then(
                                 Commands.argument("player", ArgumentTypes.player())
                                         .executes(this::other)

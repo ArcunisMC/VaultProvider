@@ -23,7 +23,9 @@ public class PayCommand {
     public PayCommand(Commands commands) {
         commands.register(
                 Commands.literal("pay")
-                        .requires(sourceStack -> sourceStack.getSender() instanceof Player)
+                        .requires(sourceStack ->
+                                sourceStack.getSender() instanceof Player && sourceStack.getSender().hasPermission("vaultprovider.pay")
+                        )
                         .then(
                                 Commands.argument("player", ArgumentTypes.player())
                                         .then(

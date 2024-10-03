@@ -13,5 +13,35 @@ dependencies:
       required: true
 
 permissions:
-  vaultprovider.economy.manage:
+  vaultprovider.manage:
     default: op
+
+  vaultprovider.balance:
+    default: false
+    children:
+      - vaultprovider.balance.self
+      - vaultprovider.balance.other
+
+  vaultprovider.balance.self:
+    default: true
+    description: Get your own balance
+
+  vaultprovider.balance.other:
+    default: false
+    description: Get someone else's balance
+
+  vaultprovider.deposit:
+    default: true
+    description: Deposit money into banks the player is a member of
+
+  vaultprovider.withdraw:
+    default: true
+    description: Withdraw money from banks the player is a member of
+
+  vaultprovider.pay:
+    default: true
+    description: Pay other players
+
+  vaultprovider.bank:
+    default: true
+    description: Manage owned banks

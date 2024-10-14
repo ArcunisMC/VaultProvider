@@ -21,6 +21,7 @@ permissions:
     children:
       - vaultprovider.balance.self
       - vaultprovider.balance.other
+      - aultprovider.balance.bank
 
   vaultprovider.balance.self:
     default: true
@@ -29,6 +30,14 @@ permissions:
   vaultprovider.balance.other:
     default: false
     description: Get someone else's balance
+    children:
+      - vaultprovider.balance.self
+
+  vaultprovider.balance.bank:
+    default: false
+    description: Get the balance of a bank you are a member of
+    children:
+      - vaultprovider.bank
 
   vaultprovider.deposit:
     default: true
@@ -44,4 +53,16 @@ permissions:
 
   vaultprovider.bank:
     default: true
-    description: Manage owned banks
+    description: Manage owned banks or banks you are a member of
+
+  vaultprovider.bank.members.get:
+    default: true
+    description: Get a list of members of banks you are a member of
+
+  vaultprovider.bank.members.invite:
+    default: true
+    description: Invite members to a bank you own
+
+  vaultprovider.bank.members.remove:
+    default: true
+    description: Remove members from a bank you own

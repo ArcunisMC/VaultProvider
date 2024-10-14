@@ -1,7 +1,6 @@
 package com.arcunis.vaultprovider.commands;
 
 import com.arcunis.vaultprovider.Main;
-import com.arcunis.vaultprovider.EconomyManager;
 import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.DoubleArgumentType;

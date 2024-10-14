@@ -1,7 +1,11 @@
 package com.arcunis.vaultprovider;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class EconomyManager {
 

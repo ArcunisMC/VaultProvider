@@ -1,6 +1,5 @@
 package com.arcunis.vaultprovider.commands;
 
-import com.arcunis.vaultprovider.EconomyManager;
 import com.arcunis.vaultprovider.Main;
 import com.arcunis.vaultprovider.utils.Formatter;
 import com.mojang.brigadier.Command;
@@ -38,14 +37,23 @@ public class BankCommand {
                                         .suggests(this::bankSuggestion)
                                         .then(
                                                 Commands.literal("balance")
+                                                        .requires(sourceStack ->
+                                                            sourceStack.getSender().hasPermission("vaultprovider.balance.bank")
+                                                        )
                                                         .executes(this::balance)
                                         )
                                         .then(
                                                 Commands.literal("getMembers")
+                                                        .requires(sourceStack ->
+                                                                sourceStack.getSender().hasPermission("vaultprovider.bank.members.get")
+                                                        )
                                                         .executes(this::getMembers)
                                         )
                                         .then(
                                                 Commands.literal("invite")
+                                                        .requires(sourceStack ->
+                                                                sourceStack.getSender().hasPermission("vaultprovider.bank.members.invite")
+                                                        )
                                                         .then(
                                                                 Commands.argument("player", ArgumentTypes.player())
                                                                         .executes(this::inviteMember)
@@ -53,15 +61,21 @@ public class BankCommand {
                                         )
                                         .then(
                                                 Commands.literal("revokeInvite")
+                                                        .requires(sourceStack ->
+                                                                sourceStack.getSender().hasPermission("vaultprovider.bank.members.invite")
+                                                        )
                                                         .then(
-                                                        Commands.argument("player", StringArgumentType.string())
+                                                            Commands.argument("player", StringArgumentType.string())
                                                                 .suggests(this::invitationSuggestion)
                                                                 .executes(this::revokeInvite)
-                                                )
+                                                        )
 
                                         )
                                         .then(
                                                 Commands.literal("removeMember")
+                                                        .requires(sourceStack ->
+                                                                sourceStack.getSender().hasPermission("vaultprovider.bank.members.remove")
+                                                        )
                                                         .then(
                                                                 Commands.argument("member", StringArgumentType.string())
                                                                         .executes(this::removeMember)
@@ -130,6 +144,16 @@ public class BankCommand {
         valuesMap.put("bank", bank);
         valuesMap.put("player", player.getName());
 
+        Player executor = (Player) ctx.getSource().getSender();
+        if (!EconomyManager.getBankOwner(bank).equals(executor.getUniqueId())) {
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("not-owner-of-bank"), valuesMap)
+                    ).color(NamedTextColor.DARK_RED)
+            );
+            return Command.SINGLE_SUCCESS;
+        }
+
         ctx.getSource().getSender().sendMessage(
                 Component.text(
                         Formatter.formatString(Main.getMessage("bank-remove-member"), valuesMap)
@@ -173,12 +197,25 @@ public class BankCommand {
         valuesMap.put("bank", bank);
         valuesMap.put("player", player.getName());
 
+        Player executor = (Player) ctx.getSource().getSender();
+        if (!EconomyManager.getBankOwner(bank).equals(executor.getUniqueId())) {
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("not-owner-of-bank"), valuesMap)
+                    ).color(NamedTextColor.DARK_RED)
+            );
+
+            return Command.SINGLE_SUCCESS;
+        }
+
         if (EconomyManager.getBankMembers(bank).contains(player.getUniqueId())) {
             ctx.getSource().getSender().sendMessage(
                     Component.text(
                             Formatter.formatString(Main.getMessage("member-already-exists"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
+
+            return Command.SINGLE_SUCCESS;
         }
 
         if (invites.get(bank).contains(player.getUniqueId())) {
@@ -187,7 +224,12 @@ public class BankCommand {
                             Formatter.formatString(Main.getMessage("invitation-already-exists"), valuesMap)
                     ).color(NamedTextColor.DARK_RED)
             );
+
+            return Command.SINGLE_SUCCESS;
         }
+
+        if (!invites.containsKey(bank)) invites.put(bank, new ArrayList<>());
+        invites.get(bank).add(player.getUniqueId());
 
         ctx.getSource().getSender().sendMessage(
                 Component.text(
@@ -225,10 +267,31 @@ public class BankCommand {
 
         String bank = StringArgumentType.getString(ctx, "bank");
         String playerName = StringArgumentType.getString(ctx, "player");
+        Player executor = (Player) ctx.getSource().getSender();
+
+        Map<String, Object> valuesMap = new HashMap<>();
+        valuesMap.put("bank", bank);
+        valuesMap.put("player", executor.getName());
+
+        if (!EconomyManager.getBankOwner(bank).equals(executor.getUniqueId())) {
+            ctx.getSource().getSender().sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("not-owner-of-bank"), valuesMap)
+                    ).color(NamedTextColor.DARK_RED)
+            );
+            return Command.SINGLE_SUCCESS;
+        }
 
         invites.get(bank).remove(Bukkit.getPlayerUniqueId(playerName));
 
-
+        ctx.getSource().getSender().sendMessage(
+                Component.text(
+                        Formatter.formatString(
+                                Main.getMessage("revoked-invitation"),
+                                valuesMap
+                        )
+                ).color(NamedTextColor.GOLD)
+        );
 
         return Command.SINGLE_SUCCESS;
     }
@@ -238,9 +301,31 @@ public class BankCommand {
         String bank = StringArgumentType.getString(ctx, "bank");
         Player player = (Player) ctx.getSource().getSender();
 
-        if (!invites.get(bank).contains(player.getUniqueId())) {
+        Map<String, Object> valuesMap = new HashMap<>();
+        valuesMap.put("bank", bank);
+        valuesMap.put("player", player.getName());
+        valuesMap.put("owner", Bukkit.getOfflinePlayer(EconomyManager.getBankOwner(bank)).getName());
 
+        if (!invites.get(bank).contains(player.getUniqueId())) {
+            player.sendMessage(
+                    Component.text(
+                            Formatter.formatString(Main.getMessage("accept-invalid-invite"), valuesMap)
+                    ).color(NamedTextColor.DARK_RED)
+            );
+
+            return Command.SINGLE_SUCCESS;
         }
+
+        EconomyManager.addBankMember(bank, player.getUniqueId());
+
+        player.sendMessage(
+                Component.text(
+                        Formatter.formatString(
+                                Main.getMessage("accept-invite"),
+                                valuesMap
+                        )
+                ).color(NamedTextColor.GOLD)
+        );
 
         return Command.SINGLE_SUCCESS;
     }

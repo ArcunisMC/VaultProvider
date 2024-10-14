@@ -3,6 +3,7 @@ package com.arcunis.vaultprovider;
 import com.arcunis.vaultprovider.utils.Formatter;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public boolean hasAccount(String s) {
-        return false;
+        return hasAccount(Bukkit.getOfflinePlayer(s));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public boolean hasAccount(String s, String s1) {
-        return false;
+        return hasAccount(Bukkit.getOfflinePlayer(s));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public double getBalance(String s) {
-        return 0;
+        return getBalance(Bukkit.getOfflinePlayer(s));
     }
 
     @Override
@@ -86,7 +87,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public double getBalance(String s, String s1) {
-        return 0;
+        return getBalance(Bukkit.getOfflinePlayer(s));
     }
 
     @Override
@@ -97,7 +98,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public boolean has(String s, double v) {
-        return false;
+        return has(Bukkit.getOfflinePlayer(s), v);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public boolean has(String s, String s1, double v) {
-        return false;
+        return has(Bukkit.getOfflinePlayer(s), v);
     }
 
     @Override
@@ -119,7 +120,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse withdrawPlayer(String s, double v) {
-        return null;
+        return withdrawPlayer(Bukkit.getOfflinePlayer(s), v);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse withdrawPlayer(String s, String s1, double v) {
-        return null;
+        return withdrawPlayer(Bukkit.getOfflinePlayer(s), v);
     }
 
     @Override
@@ -142,7 +143,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse depositPlayer(String s, double v) {
-        return null;
+        return depositPlayer(Bukkit.getOfflinePlayer(s), v);
     }
 
     @Override
@@ -154,7 +155,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse depositPlayer(String s, String s1, double v) {
-        return null;
+        return depositPlayer(Bukkit.getOfflinePlayer(s), v);
     }
 
     @Override
@@ -165,7 +166,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse createBank(String s, String s1) {
-        return null;
+        return createBank(s, Bukkit.getOfflinePlayer(s1));
     }
 
     @Override
@@ -209,7 +210,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse isBankOwner(String s, String s1) {
-        return null;
+        return isBankOwner(s, Bukkit.getOfflinePlayer(s1));
     }
 
     @Override
@@ -223,7 +224,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public EconomyResponse isBankMember(String s, String s1) {
-        return null;
+        return isBankMember(s, Bukkit.getOfflinePlayer(s1));
     }
 
     @Override
@@ -242,7 +243,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public boolean createPlayerAccount(String s) {
-        return false;
+        return createPlayerAccount(Bukkit.getOfflinePlayer(s));
     }
 
     @Override
@@ -255,7 +256,7 @@ public class EconomyProvider implements Economy {
     @Override
     @Deprecated
     public boolean createPlayerAccount(String s, String s1) {
-        return false;
+        return createPlayerAccount(Bukkit.getOfflinePlayer(s));
     }
 
     @Override

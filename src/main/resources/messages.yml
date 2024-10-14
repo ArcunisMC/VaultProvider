@@ -108,7 +108,16 @@ bank-invitation: "You received an invitation to join {bank}"  # Placeholders: ba
 accept-action: "Click here to accept"  # No placeholders
 
 # When a player accepts an invitation that does not exist
-accept-invalid-invite: "You do not have an invitation for {bank}. If you think that this is a mistake please message {owner}" # Placeholders: bank, owner
+accept-invalid-invite: "You do not have an invitation for {bank}. If you think that this is a mistake please message {owner}"  # Placeholders: bank, owner
+
+# When a player accepts an invitation
+accept-invite: "Welcome to {bank}"  # Placeholders: bank
 
 # When a player invites someone but an invitation already exists
-invitation-already-exists: "{player} is already invited to {bank}. If you think they missed the invite please message them" # PlaceholderS: player, bank
+invitation-already-exists: "{player} is already invited to {bank}. If you think they missed the invite please message them"  # Placeholders: player, bank
+
+# When a player runs a command that requires them to be the owner of the bank and they are not
+not-owner-of-bank: "You are not permitted to execute this command. You need to be the owner of {bank} to do this"  # Placeholders: bank
+
+# When a bank owner revokes an invitation
+invitation-revoked: "Revoked invitation to {bank} for {player}"  # Placeholders: player, bank

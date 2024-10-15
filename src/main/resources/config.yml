@@ -12,6 +12,7 @@ name-plural: "dollars"
 # The admin economy command is always enabled. It is operator only and provides functions to manage the economy
 commands:
   balance: true
+  bank: true
   pay: true
   deposit: true
   withdraw: true

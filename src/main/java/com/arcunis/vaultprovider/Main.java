@@ -66,6 +66,7 @@ public final class Main extends JavaPlugin implements Listener {
             if (getConfig().getBoolean("commands.pay")) new PayCommand(commands);
             if (getConfig().getBoolean("commands.deposit")) new DepositCommand(commands);
             if (getConfig().getBoolean("commands.withdraw")) new WithdrawCommand(commands);
+            if (getConfig().getBoolean("commands.bank")) new BankCommand(commands);
         });
 
     }
